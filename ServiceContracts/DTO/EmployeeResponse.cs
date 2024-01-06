@@ -1,4 +1,5 @@
-﻿using ServiceContracts.Enums;
+﻿using Entities;
+using ServiceContracts.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +27,22 @@ namespace ServiceContracts.DTO
                 Position = Position
             };
         }
+
+    }
+    public static class EmployeeExtensions
+    {
+
+        public static EmployeeResponse ToEmployeeResponse(this Employee employee)
+        {
+            return new EmployeeResponse()
+            {
+                EmployeeID = employee.EmployeeID,
+                EmployeeName = employee.EmployeeName,
+                Email = employee.Email,
+                Gender = employee.Gender,
+                Position = employee.Position
+            };
+        }
+
     }
 }
