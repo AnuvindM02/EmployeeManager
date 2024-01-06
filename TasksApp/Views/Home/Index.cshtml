@@ -1,12 +1,41 @@
-﻿@{
+﻿@model IEnumerable<EmployeeResponse>
+
+@{
     ViewBag.Title = "Home";
 }
-<table class="table table-hover mt-5">
-   <tr>
-        <th>#</th>
-        <th>Employee Name</th>
-        <th>Position</th>
-        <th>Manage</th>
-   </tr>
-   <tbody></tbody>
-</table>
+
+<form asp-controller="Home" asp-action="Index" method="get">
+
+    <h1>Employees</h1>
+
+    <table class="table table-hover mt-5">
+        <tr>
+            <th>#</th>
+            <th>Employee Name</th>
+            <th>Position</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Manage</th>
+        </tr>
+        <tbody>
+            @{
+                var i = 0;
+            }
+            @foreach (EmployeeResponse employeeResponse in Model)
+            {
+                i++;
+                <tr>
+                    <td>@i</td>
+                    <td>@employeeResponse.EmployeeName</td>
+                    <td>@employeeResponse.Position</td>
+                    <td>@employeeResponse.Gender</td>
+                    <td>@employeeResponse.Email</td>
+                    <td>
+                        <a asp-controller="Home" asp-action="Edit" asp-route-personID="@employeeResponse.EmployeeID" class="btn btn-secondary">Edit</a>
+                        <a asp-controller="Home" asp-action="Delete" asp-route-personID="@employeeResponse.EmployeeID" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+
+    </table>
+</form>

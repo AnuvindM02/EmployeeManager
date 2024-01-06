@@ -11,7 +11,7 @@ namespace ServiceContracts.DTO
 {
     public class EmployeeAddRequest
     {
-        [Required(ErrorMessage ="Person Name can't be blank")]
+        [Required(ErrorMessage ="Employee name can't be blank")]
         public string? EmployeeName {  get; set; }
        
 

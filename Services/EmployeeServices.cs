@@ -1,6 +1,7 @@
 ﻿using Entities;
 using ServiceContracts;
 using ServiceContracts.DTO;
+using ServiceContracts.Enums;
 using Services.Helpers;
 
 namespace Services
@@ -8,13 +9,11 @@ namespace Services
     public class EmployeeServices : IEmployeeServices
     {
         private readonly List<Employee> _employees;
-        private readonly IEmployeeServices _employeeServices;
 
         //constructor
         public EmployeeServices()
         {
             _employees = new List<Employee>();
-            _employeeServices  = new EmployeeServices();
         }
 
         public EmployeeResponse AddEmployee(EmployeeAddRequest? employeeAddRequest)
@@ -53,7 +52,23 @@ namespace Services
 
         public List<EmployeeResponse> GetAllEmployees()
         {
+            /*List<EmployeeResponse> lists = new List<EmployeeResponse>() { new EmployeeResponse() { Email="anuvindm02@gmail.com",EmployeeID=Guid.NewGuid(),
+            EmployeeName="anuvind",Gender=GenderOptions.Male.ToString(), Position="developer"} };
+            return lists;*/
             return _employees.Select(employee => employee.ToEmployeeResponse()).ToList();
+        }
+
+        public EmployeeResponse GetEmployeeById(Guid? EmployeeId)
+        {
+            if (EmployeeId == null)
+                return null;
+
+            Employee? employee = _employees.FirstOrDefault(emp => emp.EmployeeID == EmployeeId);
+
+            if (employee == null)
+                return null;
+
+            return employee.ToEmployeeResponse();
         }
 
         public EmployeeResponse UpdateEmployee(EmployeeUpdateRequest? employeeUpdateRequest)

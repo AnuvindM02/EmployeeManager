@@ -30,5 +30,12 @@ namespace ServiceContracts
         /// <param name="EmployeeId"></param>
         /// <returns>Boolean</returns>
         bool DeleteEmployee(Guid? EmployeeId);
+
+        /// <summary>
+        /// Find employee by EmployeeID
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns>EmployeeResponse Class</returns>
+        EmployeeResponse GetEmployeeById(Guid? EmployeeId);
     }
 }
