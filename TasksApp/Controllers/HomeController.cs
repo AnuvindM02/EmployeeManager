@@ -51,6 +51,27 @@ namespace TasksApp.Controllers
             return RedirectToAction("Index","Home");
         }
 
-        
+        [HttpGet]
+        [Route("[action]/{EmployeeID}")]
+        public IActionResult Delete(Guid? EmployeeID)
+        {
+            EmployeeResponse? employeeResponse = _employeeServices.GetEmployeeById(EmployeeID);
+            if(employeeResponse == null)
+                return RedirectToAction("Index","Home");
+
+            return View(employeeResponse);
+        }
+
+        [HttpPost]
+        [Route("[action]/{EmployeeID}")]
+        public IActionResult Delete(EmployeeUpdateRequest employeeUpdateRequest)
+        {
+            EmployeeResponse? employeeResponse = _employeeServices.GetEmployeeById(employeeUpdateRequest.EmployeeID);
+            if (employeeResponse == null)
+                return RedirectToAction("Index", "Home");
+
+            _employeeServices.DeleteEmployee(employeeUpdateRequest.EmployeeID);
+            return RedirectToAction("Index","Home");
+        }
     }
 }

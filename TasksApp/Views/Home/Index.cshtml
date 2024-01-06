@@ -31,8 +31,8 @@
                     <td>@employeeResponse.Gender</td>
                     <td>@employeeResponse.Email</td>
                     <td>
-                        <a asp-controller="Home" asp-action="Edit" asp-route-personID="@employeeResponse.EmployeeID" class="btn btn-secondary">Edit</a>
-                        <a asp-controller="Home" asp-action="Delete" asp-route-personID="@employeeResponse.EmployeeID" class="btn btn-danger">Delete</a>
+                        <a asp-controller="Home" asp-action="Edit" asp-route-EmployeeID="@employeeResponse.EmployeeID" class="btn btn-secondary">Edit</a>
+                        <a asp-controller="Home" asp-action="Delete" asp-route-EmployeeID="@employeeResponse.EmployeeID" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             }

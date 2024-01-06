@@ -1,1 +1,23 @@
-﻿
+﻿@model EmployeeResponse
+@{
+    ViewBag.Title = "Delete Employee";
+}
+<div class="box">
+    <form asp-controller="Home" asp-action="Delete" method="post">
+        <h2>Delete Employee?</h2>
+
+        <div class="mb-3">
+            <label asp-for="EmployeeName" class="form-label">Employee Name</label>
+            <input type="text" asp-for="EmployeeName" class="form-control" disabled>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Position" class="form-label">Position</label>
+            <input type="text" asp-for="Position" class="form-control" disabled>
+        </div>
+
+         <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+         <button type="submit" class="btn btn-outline-danger">Delete</button>
+
+    </form>
+</div>
