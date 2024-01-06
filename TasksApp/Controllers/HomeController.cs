@@ -73,5 +73,37 @@ namespace TasksApp.Controllers
             _employeeServices.DeleteEmployee(employeeUpdateRequest.EmployeeID);
             return RedirectToAction("Index","Home");
         }
+
+        [HttpGet]
+        [Route("[action]/{EmployeeID}")]
+        public IActionResult Edit(Guid? EmployeeID)
+        {
+            EmployeeResponse? employeeResponse = _employeeServices.GetEmployeeById(EmployeeID);
+            if (employeeResponse == null)
+                return RedirectToAction("Index", "Home");
+
+            EmployeeUpdateRequest employeeUpdateRequest = employeeResponse.ToEmployeeUpdateRequest();
+
+            return View(employeeUpdateRequest);
+        }
+
+        [HttpPost]
+        [Route("[action]/{EmployeeID}")]
+        public IActionResult Edit(EmployeeUpdateRequest employeeUpdateRequest)
+        {
+            EmployeeResponse? employeeResponse = _employeeServices.GetEmployeeById(employeeUpdateRequest.EmployeeID);
+
+            if (employeeResponse == null)
+                return RedirectToAction("Index", "Home");
+
+            if(ModelState.IsValid)
+            {
+                EmployeeResponse updatedEmployee = _employeeServices.UpdateEmployee(employeeUpdateRequest);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return View(employeeResponse.ToEmployeeUpdateRequest());
+        }
     }
 }
