@@ -19,11 +19,29 @@ namespace TasksApp.Controllers
 
         [Route("[action]")]
         [Route("/")]
-        public IActionResult Index()
-        {            
-            List<EmployeeResponse> employees = _employeeServices.GetAllEmployees();
+        public IActionResult Index(string searchBy, string? searchString, string sortBy = nameof(EmployeeResponse.EmployeeName),SortOrderOptions sortOrder = SortOrderOptions.ASC)
+        {
 
-            return View(employees);
+            ViewBag.SearchFields = new Dictionary<string, string>()
+            {
+                {nameof(EmployeeResponse.EmployeeName), "Employee Name"},
+                {nameof(EmployeeResponse.Position), "Position" },
+                {nameof(EmployeeResponse.Gender), "Gender" },
+                {nameof(EmployeeResponse.Email), "Email" }
+            };
+
+
+            //Filtering
+            List<EmployeeResponse> employees = _employeeServices.GetFilteredEmployees(searchBy, searchString);
+            ViewBag.CurrentSearchBy = searchBy;
+            ViewBag.CurrentSearchString = searchString;
+
+            //Sorting
+            List<EmployeeResponse> sortedEmployees = _employeeServices.GetSortedEmployees(employees, sortBy, sortOrder);
+            ViewBag.CurrentSortBy = sortBy;
+            ViewBag.CurrentSortOrder = sortOrder.ToString();
+
+            return View(sortedEmployees);
         }
 
         [HttpGet]

@@ -8,13 +8,53 @@
 
     <h1>Employees</h1>
 
-    <table class="table table-hover mt-5">
+    <nav class="navbar navbar-dark mt-5" style="background-color: #40646e22;padding:6px;">
+
+        @*Drop down*@
+        <select name="searchBy" class="form-select nav-item" aria-label="Default select example" style="width:200px;margin-left:10px;">
+            @foreach(var field in ViewBag.SearchFields)
+            {
+                if(field.Key == ViewBag.CurrentSearchBy)
+                {
+                    <option value="@field.Key" selected>@field.Value</option>
+                }
+                else
+                {
+                    <option value="@field.Key">@field.Value</option>
+                }
+            }
+        </select>
+
+        @*Search field*@
+        <div class="d-flex nav-item">
+            <input name="searchString" value="@ViewBag.CurrentSearchString" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-success" type="submit" style="margin:2px;">Search</button>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary" type="submit" style="margin:2px;">Clear</a>
+        </div>
+    </nav>
+
+    <table class="table table-hover">
         <tr>
             <th>#</th>
-            <th>Employee Name</th>
-            <th>Position</th>
-            <th>Gender</th>
-            <th>Email</th>
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+            { "ColumnName", nameof(EmployeeResponse.EmployeeName) },
+            { "DisplayName", "Employee Name" },
+            })
+
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+            { "ColumnName", nameof(EmployeeResponse.Position) },
+            { "DisplayName", "Position" },
+            })
+
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+            { "ColumnName", nameof(EmployeeResponse.Gender) },
+            { "DisplayName", "Gender" },
+            })
+
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
+            { "ColumnName", nameof(EmployeeResponse.Email) },
+            { "DisplayName", "Email" },
+            })
             <th>Manage</th>
         </tr>
         <tbody>
