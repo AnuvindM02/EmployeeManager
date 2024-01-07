@@ -1,0 +1,67 @@
+﻿@model AddTaskModels
+@{
+    ViewBag.Title = "Add Tasks";
+}
+<form asp-controller="home" asp-action="EditTaskStatus" method="post">
+
+    <h2>Tasks for @ViewBag.EmployeeName</h2>
+
+    <table class="table table-hover">
+        <tr>
+            <th>Task Details</th>
+            <th>Status</th>
+            <th>Manage</th>
+        </tr>
+        <tbody>
+            @foreach(TaskResponse taskResponse in Model.taskResponses)
+            {
+                <tr class="@(taskResponse.IsCompleted ? "table-success" : "table-danger")">
+                    <td width="50%">@taskResponse.TaskDetails</td>
+                    @if (taskResponse.IsCompleted)
+                    {
+                        <td width="25%">Completed</td>
+                        <td width="25%"></td>
+                    }
+                    else
+                    {
+                        <input type="hidden" asp-for="@Model.taskUpdateRequest.TaskDetails" value="@taskResponse.TaskDetails" />
+                        <input type="hidden" asp-for="@Model.taskUpdateRequest.IsCompleted" value="true"/>
+                        <input type="hidden" asp-for="@Model.taskUpdateRequest.TaskID" value="@taskResponse.TaskID" />
+                        <input type="hidden" asp-for="@Model.taskUpdateRequest.EmployeeID" value="@taskResponse.EmployeeID" />
+
+                        <td width="25%">Pending</td>
+                        <td width="25%">
+                            <button type="submit" class="btn btn-outline-success">Mark as completed
+                            </button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+
+@*Add Task Form*@
+<div class="m-5">
+<form asp-controller="home" asp-action="AddTask" method="post">
+
+    <h3>Add new task</h3>
+    <div class="form-floating">        
+        <textarea asp-for="@Model.taskAddRequest.TaskDetails" class="form-control" placeholder="Leave a task here" id="floatingTextarea2" style="height: 100px; width:750px;"></textarea>
+        <label asp-for="@Model.taskAddRequest.TaskDetails" style="color:gray">Assign a new task to @ViewBag.EmployeeName</label>
+        <span asp-validation-for="@Model.taskAddRequest.TaskDetails" class="validation-text"></span>
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary" asp-route-EmployeeID="@ViewBag.EmployeeID" style="margin:10px;">Add new task</button>
+</form>
+</div>
+@*For Validation*@
+@section scripts
+    {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" asp-fallback-test="window.jQuery" asp-fallback-src="~/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.4/jquery.validate.min.js" asp-fallback-test="window.jQuery.validator" asp-fallback-src="~/jquery.validate.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js" asp-fallback-test="window.jQuery.validator.unobstrusive" asp-fallback-src="~/jquery.validate.unobtrusive.min.js"></script>
+    }

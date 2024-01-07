@@ -8,26 +8,12 @@ namespace Services
 {
     public class EmployeeServices : IEmployeeServices
     {
-        private readonly List<Employee> _employees;
+        private readonly EmployeesDbContext _db;
 
         //constructor
-        public EmployeeServices()
+        public EmployeeServices(EmployeesDbContext employeesDbContext)
         {
-            /*            _employees = new List<Employee>();
-            */
-            _employees = new List<Employee>{
-                new Employee() { EmployeeName = "Anuvind", EmployeeID = Guid.Parse("5D3C8142-B806-414F-8D3F-2DE6ED422C09"),Email="anuvind@gmail.com",Gender="Male",Position="Junior Developer"},
-                new Employee() { EmployeeName = "Avani", EmployeeID = Guid.Parse("40E13262-FB41-48F2-BBA7-A305ABB737F0"), Email = "avani@gmail.com", Gender = "Female", Position = "Tester" },
-                new Employee() { EmployeeName = "Aguste", EmployeeID = Guid.Parse("8082ED0C-396D-4162-AD1D-29A13F929824"), Email = "aleddy0@booking.com", Gender = "Female", Position = "HR" },
-                new Employee() { EmployeeName = "Jasmina", EmployeeID = Guid.Parse("06D15BAD-52F4-498E-B478-ACAD847ABFAA"), Email = "jsyddie1@miibeian.gov.cn", Gender = "Female", Position = "Data Analyst" },
-                new Employee() { EmployeeName = "Kilian", EmployeeID = Guid.Parse("D3EA677A-0F5B-41EA-8FEF-EA2FC41900FD"), Email = "khaquard2@arstechnica.com", Gender = "Male", Position = "Developer" },
-                new Employee() { EmployeeName = "Kendall", EmployeeID = Guid.Parse("89452EDB-BF8C-4283-9BA4-8259FD4A7A76"), Email = "kendall01@gmail.com", Gender = "Female", Position = "Junior Developer" },
-                new Employee() { EmployeeName = "Corabelle", EmployeeID = Guid.Parse("F5BD5979-1DC1-432C-B1F1-DB5BCCB0E56D"), Email = "corabelle@outlook.com", Gender = "Female", Position = "Senior Developer" },
-                new Employee() { EmployeeName = "Seumas", EmployeeID = Guid.Parse("A795E22D-FAED-42F0-B134-F3B89B8683E5"), Email = "seumus@gmail.com", Gender = "Male", Position = "Data Scientist" },
-                new Employee() { EmployeeName = "Freemon", EmployeeID = Guid.Parse("7B75097B-BFF2-459F-8EA8-63742BBD7AFB"), Email = "freemon98@gmail.com", Gender = "Male", Position = "Product Manager" },
-                new Employee() { EmployeeName = "Oby", EmployeeID = Guid.Parse("6717C42D-16EC-4F15-80D8-4C7413E250CB"), Email = "fbischof6@boston.com", Gender = "Male", Position = "QA Analyst" }
-                };
-
+            _db = employeesDbContext;
         }
 
         public EmployeeResponse AddEmployee(EmployeeAddRequest? employeeAddRequest)
@@ -43,7 +29,8 @@ namespace Services
             employee.EmployeeID=Guid.NewGuid();
 
             //Adding Employee to database
-            _employees.Add(employee);
+            _db.Employees.Add(employee);
+            _db.SaveChanges();
 
             return employee.ToEmployeeResponse();
 
@@ -54,14 +41,14 @@ namespace Services
             if (EmployeeId == null)
                 throw new ArgumentNullException(nameof(EmployeeId));
 
-            Employee? employee = _employees.FirstOrDefault(employee => employee.EmployeeID==EmployeeId);
+            Employee? employee = _db.Employees.FirstOrDefault(employee => employee.EmployeeID==EmployeeId);
             if(employee == null)
                 return false;
 
-            _employees.RemoveAll(employee => employee.EmployeeID == EmployeeId);
+            _db.Employees.Remove(_db.Employees.First(employee => employee.EmployeeID == EmployeeId));
+            _db.SaveChanges();
 
             return true;
-
         }
 
         public List<EmployeeResponse> GetAllEmployees()
@@ -69,7 +56,7 @@ namespace Services
             /*List<EmployeeResponse> lists = new List<EmployeeResponse>() { new EmployeeResponse() { Email="anuvindm02@gmail.com",EmployeeID=Guid.NewGuid(),
             EmployeeName="anuvind",Gender=GenderOptions.Male.ToString(), Position="developer"} };
             return lists;*/
-            return _employees.Select(employee => employee.ToEmployeeResponse()).ToList();
+            return _db.Employees.Select(employee => employee.ToEmployeeResponse()).ToList();
         }
 
         public EmployeeResponse GetEmployeeById(Guid? EmployeeId)
@@ -77,7 +64,7 @@ namespace Services
             if (EmployeeId == null)
                 return null;
 
-            Employee? employee = _employees.FirstOrDefault(emp => emp.EmployeeID == EmployeeId);
+            Employee? employee = _db.Employees.FirstOrDefault(emp => emp.EmployeeID == EmployeeId);
 
             if (employee == null)
                 return null;
@@ -95,7 +82,7 @@ namespace Services
             ValidationHelper.ModelValidation(employeeUpdateRequest);
 
             //retrieving the matching employee
-            Employee? matchingEmployee = _employees.FirstOrDefault(employee => employee.EmployeeID == employeeUpdateRequest.EmployeeID);
+            Employee? matchingEmployee = _db.Employees.FirstOrDefault(employee => employee.EmployeeID == employeeUpdateRequest.EmployeeID);
 
             if (matchingEmployee == null)
                 throw new ArgumentException("No employee found");
@@ -104,6 +91,8 @@ namespace Services
             matchingEmployee.Position = employeeUpdateRequest?.Position;
             matchingEmployee.Email = employeeUpdateRequest?.Email;
             matchingEmployee.Gender = employeeUpdateRequest?.Gender.ToString();
+
+            _db.SaveChanges();
 
             return matchingEmployee.ToEmployeeResponse();
         }

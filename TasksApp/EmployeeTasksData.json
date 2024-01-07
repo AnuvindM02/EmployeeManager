@@ -1,0 +1,62 @@
+[
+  {
+    "TaskID": "58f707e7-7199-42bc-96e3-59cf2a4d4e10",
+    "TaskDetails": "Do something",
+    "IsCompleted": true,
+    "EmployeeID": "58085AD6-77BF-4E12-A253-F5F7102C3E48"
+  },
+  {
+    "TaskID": "d251df32-4452-4b54-b418-03b8eb72b8db",
+    "TaskDetails": "Do a backflip",
+    "IsCompleted": false,
+    "EmployeeID": "152e8639-b070-42d5-af8f-6782494eaa56"
+  },
+  {
+    "TaskID": "9ae6f45b-2a3a-4f7b-aa74-8cc41b4a5d5b",
+    "TaskDetails": "Make it fast",
+    "IsCompleted": false,
+    "EmployeeID": "fb604f91-2ba3-48c8-bdf5-d7bd8878c909"
+  },
+  {
+    "TaskID": "720a165c-eed2-4684-aeec-cf326e618945",
+    "TaskDetails": "Do it before 10 pm",
+    "IsCompleted": true,
+    "EmployeeID": "e00296ce-e78a-4f39-9695-8f0605106138"
+  },
+  {
+    "TaskID": "189e8d61-3552-44bb-a454-47486a85699f",
+    "TaskDetails": "Do the task ASAP",
+    "IsCompleted": false,
+    "EmployeeID": "93f9d8e5-a28e-4f4c-af1e-291c3d2ca3f1"
+  },
+  {
+    "TaskID": "81bf8eb3-0ce2-4f77-888b-ac59ee9665fe",
+    "TaskDetails": "Run 100 miles",
+    "IsCompleted": false,
+    "EmployeeID": "fb604f91-2ba3-48c8-bdf5-d7bd8878c909"
+  },
+  {
+    "TaskID": "ef73fcfd-6fc2-4ec0-926e-ccdf4be9226f",
+    "TaskDetails": "Clean the car",
+    "IsCompleted": false,
+    "EmployeeID": "5464431e-30a9-48fa-9cf6-1e176e45d0af"
+  },
+  {
+    "TaskID": "4090878a-3647-4a91-b67a-2205e917055f",
+    "TaskDetails": "Fix the bugs",
+    "IsCompleted": false,
+    "EmployeeID": "735372f6-518d-4128-bfab-38c83160bf96"
+  },
+  {
+    "TaskID": "0b625c4c-92e7-489f-86a4-8b0ef537e1e1",
+    "TaskDetails": "Get something for yourselves",
+    "IsCompleted": false,
+    "EmployeeID": "58085AD6-77BF-4E12-A253-F5F7102C3E48"
+  },
+  {
+    "TaskID": "c42e02d8-4d6f-4c70-99c1-eeeef1e318c5",
+    "TaskDetails": "Wash it",
+    "IsCompleted": false,
+    "EmployeeID": "735372f6-518d-4128-bfab-38c83160bf96"
+  }
+]

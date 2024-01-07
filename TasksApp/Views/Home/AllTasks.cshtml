@@ -1,0 +1,26 @@
+﻿@model IEnumerable<TaskResponse>
+@{
+    ViewBag.Title = "All Tasks";
+}
+
+<table class="table table-hover">
+    <tr>
+        <th>#</th>
+        <th>Employee Name</th>
+        <th>Task Details</th>
+    </tr>
+    <tbody>
+        @{
+            var i = 0;
+        }
+        @foreach(TaskResponse taskResponse in Model)
+        {
+            i++;
+            <tr>
+                <td>@i</td>
+                <td>@ViewBag.EmployeeName</td>
+                <td>@taskResponse.TaskDetails</td>
+            </tr>
+        }
+    </tbody>
+</table>

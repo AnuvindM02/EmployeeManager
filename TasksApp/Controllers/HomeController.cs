@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmployeeManager.ViewModels;
+using Entities;
+using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -10,10 +12,12 @@ namespace TasksApp.Controllers
     {
 
         private readonly IEmployeeServices _employeeServices;
+        private readonly ITaskServices _taskServices;
 
-        public HomeController(IEmployeeServices employeeServices)
+        public HomeController(IEmployeeServices employeeServices, ITaskServices taskServices)
         {
             _employeeServices = employeeServices;
+            _taskServices = taskServices;
         }
 
 
@@ -123,5 +127,60 @@ namespace TasksApp.Controllers
             ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
             return View(employeeResponse.ToEmployeeUpdateRequest());
         }
+
+        [HttpGet]
+        [Route("[action]/{EmployeeID}")]
+        public IActionResult AddTask(Guid? EmployeeID)
+        {
+            AddTaskModels addTaskModels = new AddTaskModels();
+
+            List<TaskResponse> taskResponses=_taskServices.GetTasksByEmployeeID(EmployeeID);
+
+            addTaskModels.taskResponses = taskResponses;
+
+            ViewBag.EmployeeName = _employeeServices.GetEmployeeById(EmployeeID).EmployeeName;
+            ViewBag.EmployeeID = EmployeeID.ToString();
+
+            return View(addTaskModels);
+        }
+
+        [HttpPost]
+        [Route("[action]/{EmployeeID}")]
+        public IActionResult AddTask(TaskAddRequest taskAddRequest,Guid EmployeeID)
+        {
+            //Checking for any errors
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                return RedirectToAction("AddTask", new { EmployeeID = EmployeeID });
+            }
+
+            //Calling the service method
+            TaskResponse taskResponse = _taskServices.AddTask(taskAddRequest,EmployeeID);
+
+            //Staying on the same page
+            return RedirectToAction("AddTask", new { EmployeeID = EmployeeID });
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult EditTaskStatus(TaskUpdateRequest? taskUpdateRequest)
+        {
+            TaskResponse? taskResponse = _taskServices.GetTaskById(taskUpdateRequest?.TaskID);
+
+            if (taskResponse == null)
+                return RedirectToAction("Index", "Home");
+
+            if (ModelState.IsValid)
+            {
+                TaskResponse updatedTask = _taskServices.UpdateTask(taskUpdateRequest);
+                return RedirectToAction("AddTask", new { EmployeeID = taskUpdateRequest.EmployeeID });
+            }
+
+            ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return RedirectToAction("AddTask", new { EmployeeID = taskUpdateRequest.EmployeeID });
+        }
+
+        
     }
 }

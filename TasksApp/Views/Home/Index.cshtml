@@ -71,8 +71,9 @@
                     <td>@employeeResponse.Gender</td>
                     <td>@employeeResponse.Email</td>
                     <td>
-                        <a asp-controller="Home" asp-action="Edit" asp-route-EmployeeID="@employeeResponse.EmployeeID" class="btn btn-secondary">Edit</a>
-                        <a asp-controller="Home" asp-action="Delete" asp-route-EmployeeID="@employeeResponse.EmployeeID" class="btn btn-danger">Delete</a>
+                        <a asp-controller="Home" asp-action="Edit" asp-route-EmployeeID="@employeeResponse.EmployeeID" class="btn btn-outline-secondary">Edit</a>
+                        <a asp-controller="Home" asp-action="Delete" asp-route-EmployeeID="@employeeResponse.EmployeeID" class="btn btn-outline-danger">Delete</a>
+                        <a asp-controller="Home" asp-action="AddTask" asp-route-EmployeeID="@employeeResponse.EmployeeID" class="btn btn-outline-primary">Add Task</a>
                     </td>
                 </tr>
             }
