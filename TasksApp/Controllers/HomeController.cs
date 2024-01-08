@@ -181,6 +181,11 @@ namespace TasksApp.Controllers
             return RedirectToAction("AddTask", new { EmployeeID = taskUpdateRequest.EmployeeID });
         }
 
+        /*[Route("[action]")]
+        public IActionResult AllTasks()
+        {
+            return View();
+        }*/
         
     }
 }
